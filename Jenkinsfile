@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                     // Navigate to the directory containing the Dockerfile
-                  dir('Reverse-IP-Server-Project') {
+                  //dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
                         sh 'pwd'
                         sh 'ls -al'
@@ -72,7 +72,7 @@ pipeline {
                      }
                    }
                 }
-             }
+             //}
  
          stage('Pushing To DockerHUB') {
             steps {
