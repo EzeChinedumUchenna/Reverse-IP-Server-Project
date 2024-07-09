@@ -63,7 +63,7 @@ pipeline {
                     // Navigate to the directory containing the Dockerfile
                     dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
-                        sh 'docker build -t anpauthuser.azurecr.io/Reverse-IP-Server-Project:$BUILD_NUMBER .'
+                        sh 'docker build -t anpauthuser.azurecr.io/app:$BUILD_NUMBER .'
                      }
                    }
                 }
