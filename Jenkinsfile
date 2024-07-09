@@ -78,7 +78,8 @@ pipeline {
                     sh 'chmod +x ~/.docker/cli-plugins/docker-buildx'
                     //sh 'chmod 777 /var/run/docker.sock'
                     //sh "docker build -t nedumdocker/app:24 ${dockerFileDir}"
-                     sh "docker build -t nedumdocker/app:30"
+                     sh "docker buildx build -t nedumdocker/app:30 ${dockerFileDir}"
+                     //sh "docker build -t nedumdocker/app:30"
               
                           
                       }
