@@ -63,6 +63,7 @@ pipeline {
                     // Navigate to the directory containing the Dockerfile
                    // dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
+                        sh 'apt-get update'
                         sh 'apt install docker-buildx-plugin'
                         sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
                           
