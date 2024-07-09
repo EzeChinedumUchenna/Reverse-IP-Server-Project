@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                     // Navigate to the directory containing the Dockerfile
-                   // dir('Reverse-IP-Server-Project') {
+                   dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
                         //sh 'rm /var/lib/apt/lists/lock'
                         //sh 'rm /var/lib/dpkg/lock'
@@ -72,22 +72,22 @@ pipeline {
                     
                     //def dockerFileDir = "${env.WORKSPACE}/Reverse-IP-Server-Project"
 
-                    def dockerFileDir = "${env.WORKSPACE}"
+                    //def dockerFileDir = "${env.WORKSPACE}"
                     sh 'mkdir -p ~/.docker/cli-plugins'
                     sh 'curl -Lo ~/.docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v0.10.5/buildx-v0.10.5.linux-amd64"'
                     sh 'chmod +x ~/.docker/cli-plugins/docker-buildx'
                     //sh 'chmod 777 /var/run/docker.sock'
-                    sh "ls -l ${dockerFileDir}/Dockerfile"
+                    //sh "ls -l ${dockerFileDir}/Dockerfile"
                     //sh "docker build -t nedumdocker/app:24 ${dockerFileDir}"
                      //sh "docker buildx build -t nedumdocker/app:30 ${dockerFileDir}"
                      //sh "docker build -t nedumdocker/app:30"
-                    sh "DOCKER_BUILDKIT=1 docker buildx build -t nedumdocker/app:30 ${dockerFileDir}"
+                    sh "DOCKER_BUILDKIT=1 docker buildx build -t nedumdocker/app:30"
               
                           
                       }
                    }
                 }
-            // }
+            }
  
          stage('Pushing To DockerHUB') {
             steps {
