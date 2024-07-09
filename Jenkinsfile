@@ -22,19 +22,7 @@ pipeline {
         }
 
         
-        stage('Install Docker Buildx') {
-            steps {
-                script {
-                    sh '''
-                        mkdir -p ~/.docker/cli-plugins/
-                        curl -SL https://github.com/docker/buildx/releases/latest/download/buildx-v0.10.4.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx
-                        chmod +x ~/.docker/cli-plugins/docker-buildx
-                        export PATH=$PATH:~/.docker/cli-plugins/
-                        docker-buildx version
-                    '''
-                }
-            }
-        }
+
 
       
         stage('SONARQUBE SCAN') {
@@ -75,8 +63,9 @@ pipeline {
                     // Navigate to the directory containing the Dockerfile
                    // dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
-                        sh 'DOCKER_BUILDKIT=1 docker build -t nedumdocker/reverse-ip-server-project:$BUILD_NUMBER .'
-                     }
+                        sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
+                          
+                      }
                    }
                 }
             // }
