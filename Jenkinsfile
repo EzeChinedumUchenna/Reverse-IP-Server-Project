@@ -28,8 +28,8 @@ pipeline {
                     withSonarQubeEnv('sonarqube-server') {
                         sh """
                             ${SONARSCANNER_HOME}/bin/sonar-scanner \
-                            -Dsonar.projectKey=http-echo-project \
-                            -Dsonar.projectName="http-echo-project" \
+                            -Dsonar.projectKey=Reverse-IP-Server-Project \
+                            -Dsonar.projectName="Reverse-IP-Server-Project" \
                             -Dsonar.sources=. \
                             -Dsonar.go.coverage.reportPaths=coverage.out \
                         
@@ -44,7 +44,7 @@ pipeline {
             script {
              timeout(time: 10, unit:'MINUTES') {
              // waitForQualityGate abortPipeline: true
-             waitForQualityGate abortPipeline: false, credentialsId: 'Jenkins-sonaqube-Token'
+             waitForQualityGate abortPipeline: false, credentialsId: 'sonar-last'
             }
           }
         }
