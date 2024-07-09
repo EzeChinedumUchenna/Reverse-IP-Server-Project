@@ -65,6 +65,9 @@ pipeline {
                         // Build the Docker image
                         sh 'pwd'
                         sh 'ls -al'
+                        sh 'cd ..'
+                        sh 'ls -al'
+                        sh 'pwd'
                         sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
                      }
                    }
