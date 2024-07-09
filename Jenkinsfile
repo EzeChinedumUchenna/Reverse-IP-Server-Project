@@ -53,13 +53,13 @@ pipeline {
     
       
    
-        stage("BUILD IMAGE") {
+        stage("BUILD Docker IMAGE") {
             steps {
                 script {
                     // Navigate to the directory containing the Dockerfile
                    // dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
-                        sh 'docker build -t nedumdocker/reverse-ip-server-project:$BUILD_NUMBER .'
+                        sh 'DOCKER_BUILDKIT=1 docker build -t nedumdocker/reverse-ip-server-project:$BUILD_NUMBER .'
                      }
                    }
                 }
