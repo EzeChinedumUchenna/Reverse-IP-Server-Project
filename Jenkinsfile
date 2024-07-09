@@ -16,8 +16,7 @@ pipeline {
                     deleteDir()
 
                     // Checkout the code from the GitHub repository
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'Reverse-IP-Server-Project
-']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/EzeChinedumUchenna/Reverse-IP-Server-Project']]])
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'Reverse-IP-Server-Project']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/EzeChinedumUchenna/Reverse-IP-Server-Project']]])
                 }
             }
         }
