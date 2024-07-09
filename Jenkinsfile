@@ -68,7 +68,7 @@ pipeline {
                         //sh 'rm /var/lib/dpkg/lock-frontend'
                         //sh 'rm /var/cache/apt/archives/lock'
                         //sh 'apt-get update'
-                        sh 'apt install docker-buildx-plugin'
+                        //sh 'apt install docker-buildx-plugin'
                         sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
                           
                       }
