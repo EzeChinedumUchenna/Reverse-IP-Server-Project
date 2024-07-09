@@ -16,7 +16,7 @@ pipeline {
                     deleteDir()
 
                     // Checkout the code from the GitHub repository
-                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'http-echo-project']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/EzeChinedumUchenna/http-echo-project.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'http-echo-project']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/EzeChinedumUchenna/Reverse-IP-Server-Project']]])
                 }
             }
         }
@@ -61,17 +61,13 @@ pipeline {
             steps {
                 script {
                     // Navigate to the directory containing the Dockerfile
-                   // dir('Reverse-IP-Server-Project') {
-                         sh 'ls -al'
-                          sh 'pwd'
-                          sh 'cd ..'
-                          sh 'pwd'
+                  dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
-                        sh 'docker build -t anpauthuser.azurecr.io/app:$BUILD_NUMBER .'
+                        sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
                      }
                    }
                 }
-             //}
+             }
  
          stage('Pushing To DockerHUB') {
             steps {
