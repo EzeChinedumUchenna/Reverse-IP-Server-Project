@@ -63,12 +63,12 @@ pipeline {
                     // Navigate to the directory containing the Dockerfile
                    // dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
-                        sh 'rm /var/lib/apt/lists/lock'
-                        sh 'rm /var/lib/dpkg/lock'
-                        sh 'rm /var/lib/dpkg/lock-frontend'
-                        sh 'rm /var/cache/apt/archives/lock'
-                        sh 'apt-get update'
-                        sh 'apt install docker-buildx-plugin'
+                        //sh 'rm /var/lib/apt/lists/lock'
+                        //sh 'rm /var/lib/dpkg/lock'
+                        //sh 'rm /var/lib/dpkg/lock-frontend'
+                        //sh 'rm /var/cache/apt/archives/lock'
+                        //sh 'apt-get update'
+                        //sh 'apt install docker-buildx-plugin'
                         sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
                           
                       }
