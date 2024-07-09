@@ -63,6 +63,8 @@ pipeline {
                     // Navigate to the directory containing the Dockerfile
                   dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
+                        sh 'pwd'
+                        sh 'ls -al'
                         sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
                      }
                    }
@@ -76,7 +78,7 @@ pipeline {
                     echo "deploying image to DokerHub ...."
                     withCredentials([usernamePassword(credentialsId: 'docker-registry', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin nedumdocker"
-                    sh 'docker push nedumdocker/Reverse-IP-Server-Project:$BUILD_NUMBER'
+                    sh 'docker push nedumdocker/app:$BUILD_NUMBER'
                   }
                }
             }
