@@ -1,0 +1,183 @@
+*******************************************************************************************************************************************************************
+INSTALL & CONFIG JENKINS_MASTER & JENKINS_AGENT 
+********************************************************************************************************************************************************************
+
+#1. Install Java
+$ sudo apt update
+$ sudo apt upgrade
+$ sudo nano /etc/hostname
+$ sudo init 6
+$ sudo apt install openjdk-17-jre
+$ java -version
+
+#2. Install Jenkins
+Refer--https://www.jenkins.io/doc/book/installing/linux/
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+
+$ sudo systemctl enable jenkins       //Enable the Jenkins service to start at boot
+$ sudo systemctl start jenkins        //Start Jenkins as a service
+$ systemctl status jenkins
+$ sudo nano /etc/ssh/sshd_config
+$ sudo service sshd reload
+$ ssh-keygen OR $ ssh-keygen -t ed25519
+$ cd .ssh
+
+*********************************************************************************************************************************************************************************
+  INSTALL AND CONFIGURE SONARQUBE
+*********************************************************************************************************************************************************************************
+#1.Install Open JDK first. NOTE Sonarqube require Java version 17
+    $ sudo apt install openjdk-17-jre-headless
+
+#2. Update Package Repository and Upgrade Packages
+    $ sudo apt update
+    $ sudo apt upgrade
+#3. Add the PostgreSQL repository.
+    $ sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+#4. Add the PostgreSQL signing key.
+    $ get -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
+#5. Install PostgreSQL
+    $ sudo apt update
+    $sudo apt install postgresql postgresql-contrib -y
+    $ sudo systemctl enable postgresql
+    $ sudo apt install postgresql postgresql-contrib -y
+#6. Create Database for Sonarqube
+    $ sudo passwd postgres
+    $ su - postgres
+    $ createuser sonar
+    $ psql 
+    $ ALTER USER sonar WITH ENCRYPTED password 'sonar';
+    $ CREATE DATABASE sonarqube OWNER sonar;
+    $ grant all privileges on DATABASE sonarqube to sonar;
+    $ \q
+    $ exit
+]
+
+#7. Download and Extract
+    $ sudo apt-get install zip -y
+    $ sudo wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.0.65466.zip
+    $ sudo apt install unzip
+    $ sudo unzip sonarqube-9.9.0.65466.zip -d /opt
+    $ sudo mv /opt/sonarqube-9.9.0.65466 /opt/sonarqube
+
+#8. Create user and set permissions
+     $ sudo groupadd sonar
+     $ sudo useradd -d /opt/sonarqube -g sonar sonar
+     $ sudo chown sonar:sonar /opt/sonarqube -R
+
+#9. Update Sonarqube properties with DB credentials
+     $ sudo vim /opt/sonarqube/conf/sonar.properties
+     //Find and replace the below values, you might need to add the sonar.jdbc.url
+     sonar.jdbc.username=sonar
+     sonar.jdbc.password=sonar
+     sonar.jdbc.url=jdbc:postgresql://localhost:5432/sonarqube
+#10. Edit the sonar script file.
+     $ sudo nano /opt/sonarqube/bin/linux-x86-64/sonar.sh
+    About 50 lines down, locate this line or add it to the begininning:
+    #RUN_AS_USER=sonar
+
+#11. Create service for Sonarqube
+    $ sudo vim /etc/systemd/system/sonar.service
+//Paste the below into the file
+     [Unit]
+     Description=SonarQube service
+     After=syslog.target network.target
+
+     [Service]
+     Type=forking
+
+     ExecStart=/opt/sonarqube/bin/linux-x86-64/sonar.sh start
+     ExecStop=/opt/sonarqube/bin/linux-x86-64/sonar.sh stop
+
+     User=sonar
+     Group=sonar
+     Restart=always
+
+     LimitNOFILE=65536
+     LimitNPROC=4096
+
+     [Install]
+     WantedBy=multi-user.target
+
+#11. Start Sonarqube and Enable service
+     $ sudo systemctl start sonar
+     $ sudo systemctl enable sonar
+     $ sudo systemctl status sonar
+
+#12. Watch log files and monitor for startup
+     $ sudo tail -f /opt/sonarqube/logs/sonar.log
+
+#13. Edit the sysctl configuration file.
+     $ sudo nano /etc/sysctl.conf
+
+Add the following lines.
+
+ vm.max_map_count=262144
+ fs.file-max=65536
+ ulimit -n 65536
+ ulimit -u 4096
+
+#14. Reboot the system to apply the changes.
+     $ sudo reboot
+
+#15. Access SonarQube Web Interface
+Access SonarQube in a web browser at your server's IP address on port 9000. For example:
+http://192.0.2.123:9000
+
+
+=======================================================================================================================================================================================
+ArgoCD Installation on AKS Cluster and Add AKS Cluster to ArgoCD 
+=======================================================================================================================================================================================
+1 ) First, create a namespace
+    $ kubectl create namespace argocd
+
+2 ) Next, let's apply the yaml configuration files for ArgoCd
+    $ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+3 ) Now we can view the pods created in the ArgoCD namespace.
+    $ kubectl get pods -n argocd
+
+4 ) To interact with the API Server we need to deploy the CLI:
+    $ curl --silent --location -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/v2.4.7/argocd-linux-amd64
+    $ chmod +x /usr/local/bin/argocd
+
+5 ) Expose argocd-server
+    $ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+6 ) Wait about 2 minutes for the LoadBalancer creation
+    $ kubectl get svc -n argocd
+
+Note use the IP address of the Load balancer to access ArgoCD on the Browser. Lets Assume the IP = 51.8.235.100. Make sure your change the Password
+
+7 ) Get pasword and decode it.
+    $ kubectl get secret argocd-initial-admin-secret -n argocd -o yaml
+    $ echo RUEtTlBLbEZCcVBHZjlVLQ== | base64 --decode
+
+## Add AKS Cluster to ArgoCD
+9 ) login to ArgoCD from CLI
+    $ argocd login 51.8.235.100 --username admin
+
+10 ) 
+     $ argocd cluster list
+  Note: From the list we can only see a default Cluster in the ArgoCD
+
+11 ) Below command will show the AKS cluster name. Here my Cluster name is myAKS
+     $ kubectl config get-contexts
+
+12 ) Add above AKS cluster to ArgoCD with below command
+     $ argocd cluster add myAKS --name myAKS-Cluster
+Note: "myAKS" is the name of my Kubernetes Cluster  while "myAKS-Cluster" is the name given to my cluster in ArgoCD
+
+13) For test and confirmation Purpose 
+    $ argocd cluster list
+
+14. ) $ kubectl get svc
+============================================================= Cleanup =============================================================
+$ kubectl get all
+$ kubectl delete deployment.apps/virtualtechbox-regapp       //it will delete the deployment
+$ kubectl delete service/virtualtechbox-service              //it will delete the service
