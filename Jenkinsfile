@@ -29,6 +29,7 @@ pipeline {
                         mkdir -p ~/.docker/cli-plugins/
                         curl -SL https://github.com/docker/buildx/releases/latest/download/buildx-v0.10.4.linux-amd64 -o ~/.docker/cli-plugins/docker-buildx
                         chmod +x ~/.docker/cli-plugins/docker-buildx
+                        export PATH=$PATH:~/.docker/cli-plugins/
                         docker-buildx version
                     '''
                 }
