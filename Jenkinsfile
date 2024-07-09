@@ -40,7 +40,16 @@ pipeline {
         }
       
     
-
+      // stage('QUALITY GATE ANALYSIS') {
+      //   steps {
+      //      script {
+      //       timeout(time: 10, unit:'MINUTES') {
+             // waitForQualityGate abortPipeline: true
+         //    waitForQualityGate abortPipeline: false, credentialsId: 'sonar-last'
+         //   }
+        //  }
+       // }
+      //} 
     
       
    
@@ -48,13 +57,13 @@ pipeline {
             steps {
                 script {
                     // Navigate to the directory containing the Dockerfile
-                    dir('Reverse-IP-Server-Project') {
+                   // dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
                         sh 'docker build -t nedumdocker/reverse-ip-server-project:$BUILD_NUMBER .'
                      }
                    }
                 }
-             }
+            // }
  
          stage('Pushing To DockerHUB') {
             steps {
