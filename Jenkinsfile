@@ -69,7 +69,10 @@ pipeline {
                         //sh 'rm /var/cache/apt/archives/lock'
                         //sh 'apt-get update'
                         //sh 'apt install docker-buildx-plugin'
-                        sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
+                    
+                      def dockerFileDir = "${env.WORKSPACE}/Reverse-IP-Server-Project"
+                      sh "docker build -t nedumdocker/app:24 ${dockerFileDir}"
+                }
                           
                       }
                    }
