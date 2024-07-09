@@ -76,7 +76,7 @@ pipeline {
                     sh 'mkdir -p ~/.docker/cli-plugins'
                     sh 'curl -Lo ~/.docker/cli-plugins/docker-buildx "https://github.com/docker/buildx/releases/download/v0.10.5/buildx-v0.10.5.linux-amd64"'
                     sh 'chmod +x ~/.docker/cli-plugins/docker-buildx'
-                    sh 'chmod 777 /var/run/docker.sock'
+                    //sh 'chmod 777 /var/run/docker.sock'
                     sh "docker build -t nedumdocker/app:24 ${dockerFileDir}"
               
                           
