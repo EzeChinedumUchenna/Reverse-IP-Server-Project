@@ -74,18 +74,20 @@ pipeline {
                 }
              }
  
-         stage('Pushing To DockerHUB') {
-            steps {
-                // Push the Docker image to Azure Container Registry
-                script {
-                    echo "deploying image to DokerHub ...."
-                    withCredentials([usernamePassword(credentialsId: 'docker-registry', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                    sh "echo $PASS | docker login -u $USER --password-stdin nedumdocker"
-                    sh 'docker push nedumdocker/app:$BUILD_NUMBER'
-                  }
-               }
+  stage('Pushing To DockerHUB') {
+    steps {
+        // Push the Docker image to Docker Hub
+        script {
+            echo "Deploying image to DockerHub ..."
+            withCredentials([usernamePassword(credentialsId: 'docker-registry', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                sh '''
+                    echo $PASS | docker login -u $USER --password-stdin docker.io
+                    docker push nedumdocker/app:$BUILD_NUMBER
+                '''
             }
-         }
+        }
+    }
+}
         stage('Clean Up Artifact') {
             steps {
               script {
