@@ -38,18 +38,12 @@ pipeline {
                 }
             }
         }
-      '''
-        stage('QUALITY GATE ANALYSIS') {
-          steps {
-            script {
-             timeout(time: 10, unit:'MINUTES') {
-             // waitForQualityGate abortPipeline: true
-             waitForQualityGate abortPipeline: false, credentialsId: 'sonar-last'
-            }
-          }
-        }
-      } 
-      '''
+      
+    
+
+    
+      
+   
         stage("BUILD IMAGE") {
             steps {
                 script {
