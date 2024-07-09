@@ -61,18 +61,18 @@ pipeline {
             steps {
                 script {
                     // Navigate to the directory containing the Dockerfile
-                  //dir('Reverse-IP-Server-Project') {
+                  dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
                         sh 'pwd'
                         sh 'ls -al'
-                        sh 'cd ..'
+                        //sh 'cd ..'
                         sh 'ls -al'
                         sh 'pwd'
                         sh 'docker build -t nedumdocker/app:$BUILD_NUMBER .'
                      }
                    }
                 }
-             //}
+             }
  
          stage('Pushing To DockerHUB') {
             steps {
