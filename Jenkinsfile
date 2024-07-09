@@ -38,7 +38,7 @@ pipeline {
                 }
             }
         }
-
+      '''
         stage('QUALITY GATE ANALYSIS') {
           steps {
             script {
@@ -49,27 +49,27 @@ pipeline {
           }
         }
       } 
-
+      '''
         stage("BUILD IMAGE") {
             steps {
                 script {
                     // Navigate to the directory containing the Dockerfile
-                    dir('http-echo-project') {
+                    dir('Reverse-IP-Server-Project') {
                         // Build the Docker image
-                        sh 'docker build -t anpauthuser.azurecr.io/http-echo-project:$BUILD_NUMBER .'
+                        sh 'docker build -t nedumdocker/Reverse-IP-Server-Project:$BUILD_NUMBER .'
                      }
                    }
                 }
              }
  
-         stage('PUSH TO AZURE CONTAINER REGISTRY') {
+         stage('Pushing To DockerHUB') {
             steps {
                 // Push the Docker image to Azure Container Registry
                 script {
-                    echo "deploying image to ACR ...."
-                    withCredentials([usernamePassword(credentialsId: 'azure_acr', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                    sh "echo $PASS | docker login -u $USER --password-stdin anpauthuser.azurecr.io"
-                    sh 'docker push anpauthuser.azurecr.io/http-echo-project:$BUILD_NUMBER'
+                    echo "deploying image to DokerHub ...."
+                    withCredentials([usernamePassword(credentialsId: 'docker-registry', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                    sh "echo $PASS | docker login -u $USER --password-stdin nedumdocker"
+                    sh 'docker push nedumdocker/Reverse-IP-Server-Project:$BUILD_NUMBER'
                   }
                }
             }
