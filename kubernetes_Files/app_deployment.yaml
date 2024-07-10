@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: your-dockerhub-username/your-app-image:latest
+        image: nedumdocker/app:$BUILD_NUMBER
         ports:
         - containerPort: 8080
         envFrom:
