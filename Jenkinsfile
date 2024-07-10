@@ -105,7 +105,7 @@ pipeline {
                         // Navigate into the 'http-echo-project' directory
                         dir('Reverse-IP-Server-Project') {
                               sh "ls -al"
-                            dir('Deployment') {
+                            dir('kubernetes_Files') {
                               sh "ls -al"
                               sh 'git init . '
                               sh 'git config user.email "Reverse-IP@gmail.com"' 
@@ -118,8 +118,8 @@ pipeline {
                              sh "git remote -v | grep origin || git remote add origin https://${USER}:${PASS}@github.com/EzeChinedumUchenna/Reverse-IP-Server-CD-Project "
                              sh "git remote set-url origin https://${USER}:${PASS}@github.com/EzeChinedumUchenna/Reverse-IP-Server-CD-Project  "
                              sh 'git fetch origin'
-                             sh "sed -i 's/app.*/appt:${BUILD_NUMBER}/g' values.yaml"
-                             sh "cat values.yaml"
+                             //sh "sed -i 's/app.*/appt:${BUILD_NUMBER}/g' values.yaml"
+                             //sh "cat values.yaml"
                              sh 'git add .'
                              sh 'git commit -m "updated file"'
                              sh 'git checkout -b main'
