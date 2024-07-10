@@ -118,7 +118,7 @@ pipeline {
                              sh "git remote -v | grep origin || git remote add origin https://${USER}:${PASS}@github.com/EzeChinedumUchenna/Reverse-IP-Server-CD-Project "
                              sh "git remote set-url origin https://${USER}:${PASS}@github.com/EzeChinedumUchenna/Reverse-IP-Server-CD-Project  "
                              sh 'git fetch origin'
-                             //sh "sed -i 's/app.*/appt:${BUILD_NUMBER}/g' values.yaml"
+                             sh "sed -i 's/app.*/appt:${BUILD_NUMBER}/g' app_deployment.yaml"
                              //sh "cat values.yaml"
                              sh 'git add .'
                              sh 'git commit -m "updated file"'
