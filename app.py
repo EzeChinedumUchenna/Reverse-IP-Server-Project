@@ -31,7 +31,7 @@ def get_database_connection():
     #print(f"DB_NAME: {db_name}")
 
     conn = mysql.connector.connect(
-        host='db',
+        host='mysql-0',
         user='root',
         password='root',
         database='ip_logs_db',
