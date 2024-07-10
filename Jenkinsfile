@@ -91,7 +91,7 @@ pipeline {
         stage('Clean Up Artifact') {
             steps {
               script {
-                   sh 'docker rmi anpauthuser.azurecr.io/http-echo-project:$BUILD_NUMBER'
+                   sh 'docker rmi nedumdocker/app:$BUILD_NUMBER'
                 }
             }
          }
@@ -103,22 +103,22 @@ pipeline {
                        withCredentials([usernamePassword(credentialsId: 'github_Credential', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     // First we are going to attach a metadata to our commit. Like email and username, else Jenkins will complain. This is very important and a must-have at first commit but can be remove aftr that.
                         // Navigate into the 'http-echo-project' directory
-                        dir('http-echo-project') {
+                        dir('Reverse-IP-Server-Project') {
                               sh "ls -al"
                             dir('helm-Chart') {
                               sh "ls -al"
                               sh 'git init . '
-                              sh 'git config user.email "http-echo@gmail.com"' 
-                              sh 'git config user.name "http-echo"'
+                              sh 'git config user.email "Reverse-IP@gmail.com"' 
+                              sh 'git config user.name "Reverse-IP"'
                     
                              // Because my Github Password contain special character @, I will need to encode it else it wont work with Jenkins.
                               def encodedPassword = URLEncoder.encode(PASS, "UTF-8")
 
                             // Set the Git remote URL with the encoded password
-                             sh "git remote -v | grep origin || git remote add origin https://${USER}:${PASS}@github.com/EzeChinedumUchenna/http-echo-project-CD "
-                             sh "git remote set-url origin https://${USER}:${PASS}@github.com/EzeChinedumUchenna/http-echo-project-CD "
+                             sh "git remote -v | grep origin || git remote add origin https://${USER}:${PASS}@github.com/EzeChinedumUchenna/Reverse-IP-Server-CD-Project "
+                             sh "git remote set-url origin https://${USER}:${PASS}@github.com/EzeChinedumUchenna/Reverse-IP-Server-CD-Project  "
                              sh 'git fetch origin'
-                             sh "sed -i 's/http-echo-project.*/http-echo-project:${BUILD_NUMBER}/g' values.yaml"
+                             sh "sed -i 's/app.*/appt:${BUILD_NUMBER}/g' values.yaml"
                              sh "cat values.yaml"
                              sh 'git add .'
                              sh 'git commit -m "updated file"'
