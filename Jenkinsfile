@@ -105,7 +105,7 @@ pipeline {
                         // Navigate into the 'http-echo-project' directory
                         dir('Reverse-IP-Server-Project') {
                               sh "ls -al"
-                            dir('helm-Chart') {
+                            dir('Deployment') {
                               sh "ls -al"
                               sh 'git init . '
                               sh 'git config user.email "Reverse-IP@gmail.com"' 
