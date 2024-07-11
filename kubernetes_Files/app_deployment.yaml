@@ -7,6 +7,14 @@ data:
   DB_USER: root
   DB_HOST: mysql
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+type: Opaque
+data:
+  MYSQL_ROOT_PASSWORD: cm9vdA==  # Base64 encoded value of "root"
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
