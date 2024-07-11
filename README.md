@@ -33,7 +33,7 @@ The CI/CD pipeline in this repository automates the building, testing, and deplo
 
 
 ## Conclusion
-This CI/CD pipeline streamlines the development process by automating code integration, testing, and deployment. By incorporating tools like Jenkins, SonarQube, Docker, Azure Container Registry, Argo CD, and Kubernetes, we ensure high-quality code and efficient application deployment. For the configuration and integration see COMMAND file in this repo
+This CI/CD pipeline streamlines the development process by automating code integration, testing, and deployment. By incorporating tools like Jenkins, SonarQube, Docker, DockerHub, Argo CD, and Kubernetes, we ensure high-quality code and efficient application deployment. For the configuration and integration see COMMAND file in this repo
 
 __NEXT:__ To integrate a monitoring systems to oversee workload metrics and application availability. Failure to do so may result in unaddressed risks to operational stability and performance.
 
