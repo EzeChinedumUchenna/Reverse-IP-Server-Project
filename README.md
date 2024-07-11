@@ -1,4 +1,4 @@
-# CI/CD Pipeline with Jenkins, SonarQube, Docker, ArgoCD, Azure container registry, gmail, Helm and Azure Kubernetes Service (AKS)
+# CI/CD Pipeline with Jenkins, SonarQube, Docker, ArgoCD, Docker Hub, gmail, and Azure Kubernetes Service (AKS)
 
 This repository explains a comprehensive Continuous Integration/Continuous Deployment (CI/CD) pipeline using Jenkins, SonarQube, Docker, Azure Container Registry, Argo CD, and Kubernetes. Below is a detailed explanation of each step in the workflow, accompanied by a visual diagram.
 
@@ -21,11 +21,13 @@ The CI/CD pipeline in this repository automates the building, testing, and deplo
 
 * __Kubernetes:__ Orchestrates containerized applications. Runs the deployed Docker image, ensuring the application is up and running. Monitors the health and scaling of the application. The application can be accessed via the Kubernetes service as a Load balancer
 
-![image](https://github.com/EzeChinedumUchenna/http-echo-project/assets/102483586/93072e54-3b47-495e-a223-0591b6986e30)
+![image](https://github.com/EzeChinedumUchenna/Reverse-IP-Server-Project/assets/102483586/5d9daae0-97b2-4ac0-a32a-7531859d7ec6)
+
 
 
 * __Email Notification:__ Alerts stakeholders. Sends notifications about the deployment status. See below
-![Uploading image.png…]()
+![image](https://github.com/EzeChinedumUchenna/Reverse-IP-Server-Project/assets/102483586/b873c561-bcc8-4ffb-a6d0-6b4cf6eedc3f)
+
 
 
 
