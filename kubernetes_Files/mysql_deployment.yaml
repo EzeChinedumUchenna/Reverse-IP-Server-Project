@@ -1,64 +1,73 @@
 apiVersion: v1
-kind: ConfigMap
+kind: PersistentVolume
 metadata:
-  name: mysql-config
-data:
-  MYSQL_ROOT_PASSWORD: root
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/mysql
+
 ---
 apiVersion: v1
-kind: Secret
+kind: PersistentVolumeClaim
 metadata:
-  name: mysql-secret
-type: Opaque
-data:
-  MYSQL_ROOT_PASSWORD: cm9vdA==  # Base64 encoded value of 'root'
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: mysql
 spec:
-  serviceName: mysql
-  replicas: 1
   selector:
     matchLabels:
       app: mysql
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         app: mysql
     spec:
-      restartPolicy: Always
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "ip_logs_db"
         ports:
         - containerPort: 3306
-        envFrom:
-        - configMapRef:
-            name: mysql-config
-        - secretRef:
-            name: mysql-secret
+          name: mysql
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
-  volumeClaimTemplates:
-  - metadata:
-      name: mysql-persistent-storage
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 2Gi  # Adjust size as needed
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: mysql
 spec:
   ports:
-  - port: 3306
-    targetPort: 3306
-  clusterIP: None  # Headless service for stateful set
+    - port: 3306
   selector:
     app: mysql
+  clusterIP: None  # This makes the service headless, useful for stateful applications
+
+
